@@ -1,0 +1,54 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ConfigApplication<config>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.bibliomania.bookstore.config.ConfigApplication",
+            "projectName": "config",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-GatewayApplication<gateway>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.bibliomania.bookstore.gateway.GatewayApplication",
+            "projectName": "gateway",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ConfigApplication<config>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.challenge.enrollment.config.ConfigApplication",
+            "projectName": "config",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-EurekaDiscoveryServiceApplication<eureka-discovery-server>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.bibliomania.bookstore.eurekadiscoveryserver.EurekaDiscoveryServiceApplication",
+            "projectName": "eureka-discovery-server",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-DiscoveryApplication<discovery>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.challenge.enrollment.discovery.DiscoveryApplication",
+            "projectName": "discovery",
+            "args": ""
+        }
+    ]
+}
