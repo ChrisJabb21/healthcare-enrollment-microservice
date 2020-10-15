@@ -49,6 +49,16 @@
             "mainClass": "com.challenge.enrollment.discovery.DiscoveryApplication",
             "projectName": "discovery",
             "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-EnrolleeServiceApplication<enrollee-service>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.challenge.enrollment.enrolleeservice.EnrolleeServiceApplication",
+            "projectName": "enrollee-service",
+            "args": ""
         }
     ]
 }
