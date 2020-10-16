@@ -1,4 +1,4 @@
-package com.challenge.enrollment.enrolleeservice.Dependent;
+package com.challenge.enrollment.enrolleeservice.dependent;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import com.challenge.enrollment.enrolleeservice.Enrollee;
 
@@ -20,9 +21,11 @@ public class Dependent {
     private String birth_Date;
     @ManyToOne
     @JoinColumn(name = "enrollee_id")
+    @JsonBackReference
     private Enrollee enrollee;
 
-    
+    public Dependent() {}
+
 
     public Dependent(String name, String birth_Date, Enrollee enrollee) {
         this.name = name;

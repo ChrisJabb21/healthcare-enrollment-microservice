@@ -3,6 +3,7 @@ package com.challenge.enrollment.enrolleeservice;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,15 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.challenge.enrollment.enrolleeservice.Dependent.Dependent;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.challenge.enrollment.enrolleeservice.dependent.Dependent;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /***
  * svc-enrollee
  * Entity class 
  */
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "enrollees")
 public class Enrollee {
 
@@ -28,9 +28,12 @@ public class Enrollee {
 	private int enrollee_Id;
 	private String name;
 	private String activation_Status;
-	private String birth_Date;
+    private String birth_Date;
+    @Column(name = "phone_number")
     private String contact_Number;
     @OneToMany(mappedBy= "enrollee")
+    @Column(nullable = true)
+    @JsonManagedReference
     private List<Dependent> dependents = new ArrayList<>();
     
     public Enrollee(){}
@@ -74,6 +77,14 @@ public class Enrollee {
         this.activation_Status = activation_Status;
         this.birth_Date = birth_Date;
         this.contact_Number = contact_Number;
+        this.dependents = dependents;
+    }
+
+    public List<Dependent> getDependents() {
+        return dependents;
+    }
+
+    public void setDependents(List<Dependent> dependents) {
         this.dependents = dependents;
     }
 

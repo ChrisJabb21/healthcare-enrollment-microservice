@@ -2,6 +2,12 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - GatewayApplication",
+            "request": "launch",
+            "mainClass": "com.challenge.enrollment.gateway.GatewayApplication"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-ConfigApplication<config>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
