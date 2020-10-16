@@ -7,6 +7,8 @@ import com.challenge.enrollment.enrolleeservice.dependent.DependentRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,8 +18,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+
 @RestController
 @RequestMapping("/enrollees")
+@Tag(name = "enrollees", description = "the Enrollee API with documentation annotations")
 @EnableJpaRepositories
 public class EnrolleeController {
 
@@ -29,11 +43,22 @@ public class EnrolleeController {
     DependentRepository depRepo;
      
     
+    @Operation(summary = "Get all enrollees")
+    @ApiResponses(value = { 
+            @ApiResponse(responseCode = "200", description = "found enrollees", content = { 
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Enrollee.class)))}), 
+            @ApiResponse(responseCode = "404", description = "No enrollees found", content = @Content) })
     @GetMapping
 	public List<Enrollee> getAllEnrollees() {
-		return enrolleeRepo.findAll();
+        List<Enrollee> enrolleeList  = (List<Enrollee>) enrolleeRepo.findAll();
+        if (enrolleeList.isEmpty()) {
+            return (List<Enrollee>) new ResponseEntity<Enrollee>(HttpStatus.NOT_FOUND);
+        }
+		return (List<Enrollee>) new ResponseEntity<Enrollee>(HttpStatus.OK);
     }
     
+
+    @Operation(summary = "Create an enrollee")
     @PostMapping
     /***
      * Add a new enrollee
@@ -46,8 +71,15 @@ public class EnrolleeController {
 
 
 
+    @Operation(summary = "Get an enrollee by enrollee id")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "found the enrollee", content = { 
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Enrollee.class))}),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", content = @Content), 
+        @ApiResponse(responseCode = "404", description = "Enrollee not found", content = @Content) })
     @GetMapping("/{enrolleeId}")
-    public void getEnrollee(@PathVariable int enrolleeId) throws Exception {
+    public void getEnrollee(@Parameter(description="id of Enrollee to be searched")@PathVariable int enrolleeId) throws Exception {
+        
         Enrollee enrolleeToGet = enrolleeRepo.getOne(enrolleeId);
         if(enrolleeToGet == null){
             System.out.println("Could not find enrollee in system");
@@ -60,13 +92,13 @@ public class EnrolleeController {
 
 
 
+        // - get dependents of an enrollee
     @GetMapping("/enrollee/{enrolleeId}/dependents")
     public void getDependentsByEnrollee(@PathVariable int enrolleeId) throws Exception {
         Enrollee enrolleeToGet = enrolleeRepo.getOne(enrolleeId);
         if(enrolleeToGet == null){
             System.out.println("Could not find enrollee in system");
         }
-        System.out.println("");
         enrolleeRepo.findById(enrolleeId);
     }
 
@@ -120,9 +152,9 @@ public class EnrolleeController {
      * @throws Exception
      */
     @PatchMapping("/{enrolleeId}")
-    public Enrollee updateEnrollee(@PathVariable int enrolleeId) throws Exception {
+    public Enrollee updateEnrollee(@PathVariable int enrolleeId, @RequestBody Enrollee enrollee) throws Exception {
 
-        Enrollee enrolleeToUpdate = enrolleeRepo.getOne(enrolleeId);
+        Enrollee enrolleeToUpdate = enrolleeRepo.getOne(enrollee.getEnrollee_Id());
         if(enrolleeToUpdate == null){
             System.out.println("Could not find enrollee in system");
         }

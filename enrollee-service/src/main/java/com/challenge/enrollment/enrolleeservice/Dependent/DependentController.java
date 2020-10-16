@@ -1,8 +1,10 @@
 package com.challenge.enrollment.enrolleeservice.dependent;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/dependents")
 @EnableJpaRepositories
 public class DependentController {
-    // - Add dependents to an enrollee
-    // - Remove dependents from an enrollee
-    // - Modify existing dependents
+    
     @Autowired
     DependentRepository dependentRepo;
 
-    // @GetMapping("/dependents")
-    // public void show
+    @GetMapping
+	public List<Dependent> getAllDependents(){
+		return dependentRepo.findAll();
+    }
 
 
     @DeleteMapping("/dependent/{dependentId}")

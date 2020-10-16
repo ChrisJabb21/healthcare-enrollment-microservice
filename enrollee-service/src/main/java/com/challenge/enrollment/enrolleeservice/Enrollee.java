@@ -10,13 +10,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import com.challenge.enrollment.enrolleeservice.dependent.Dependent;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /***
- * svc-enrollee
- * Entity class 
+ *  Person enrolled into the healthcare program.  svc-enrollee
  */
 @Entity
 @Table(name = "enrollees")
@@ -31,6 +29,7 @@ public class Enrollee {
     private String birth_Date;
     @Column(name = "phone_number")
     private String contact_Number;
+   
     @OneToMany(mappedBy= "enrollee")
     @Column(nullable = true)
     @JsonManagedReference
@@ -86,6 +85,14 @@ public class Enrollee {
 
     public void setDependents(List<Dependent> dependents) {
         this.dependents = dependents;
+    }
+
+    public int getEnrollee_Id() {
+        return enrollee_Id;
+    }
+
+    public void setEnrollee_Id(int enrollee_Id) {
+        this.enrollee_Id = enrollee_Id;
     }
 
     

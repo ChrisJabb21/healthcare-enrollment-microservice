@@ -10,6 +10,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import com.challenge.enrollment.enrolleeservice.Enrollee;
 
+/**
+ * An Enrollee's health plan’s spouse 
+ * and eligible child or other member 
+ * who meets the applicable eligibility requirements of a group benefits agreement
+ * @param enrollee
+ */
 @Entity
 @Table(name = "dependents")
 public class Dependent {
@@ -19,6 +25,7 @@ public class Dependent {
 	private int dependent_Id;
 	private String name;
     private String birth_Date;
+    
     @ManyToOne
     @JoinColumn(name = "enrollee_id")
     @JsonBackReference
