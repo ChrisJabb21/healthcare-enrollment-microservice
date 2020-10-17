@@ -11,7 +11,7 @@ Using Spring Boot or Go, and your database of choice (PostgreSQL, MySQL, MongoDB
 - Each of an enrollee's dependents must have an id, name, and birth date
 
 The application we will be building will need to be able to do these things:
-- Add a new enrollee
+- Add a new enrollee 
 - Modify an existing enrollee
 - Remove an enrollee entirely
 - Add dependents to an enrollee

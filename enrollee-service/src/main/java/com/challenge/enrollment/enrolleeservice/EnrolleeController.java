@@ -10,7 +10,6 @@ import com.challenge.enrollment.enrolleeservice.dependent.DependentRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,6 +41,7 @@ public class EnrolleeController {
     @Autowired
     DependentRepository depRepo;
 
+    //TODO
     @Operation(summary = "Get all enrollees.")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Retrieval successful!", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Enrollee.class))) }),
@@ -52,13 +52,13 @@ public class EnrolleeController {
      * 
      * @return A list of all avialiable enrollees.
      */
-    public List<Enrollee> getAllEnrollees() {
+    public ResponseEntity<List<Enrollee>> getAllEnrollees() {
         List<Enrollee> enrolleeList = (List<Enrollee>) enrolleeRepo.findAll();
         if (enrolleeList.isEmpty()) {
             System.out.println("No enrollees found!");
-            return null;
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return enrolleeList;
+        return new ResponseEntity<>(enrolleeList, HttpStatus.OK);
     }
 
     @Operation(summary = "Create a enrollee")
@@ -128,7 +128,7 @@ public class EnrolleeController {
      */
     @Operation(summary = "Delete a enrollee.")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Enrollee deleted"),
-            @ApiResponse(responseCode = "404", description = "Bad request", content = @Content) })
+            @ApiResponse(responseCode = "404", description = "Bad request!", content = @Content) })
     @DeleteMapping("/{enrolleeId}")
     public ResponseEntity<Void> deleteEnrollee(
             @Parameter(description = "id of Enrollee to be deleted.") @PathVariable("enrolleeId") int enrolleeId) {
@@ -142,37 +142,65 @@ public class EnrolleeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // TODO Test
-    // - get dependents of an enrollee
+    @Operation(summary = "Get all dependents of an enrollee by Id.")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Retrieval successful!", content = {
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Dependent.class))) }),
+            @ApiResponse(responseCode = "404", description = "No enrollees found!", content = @Content) })
     @GetMapping("/{enrolleeId}/dependents")
-    public void getDependentsByEnrollee(@PathVariable int enrolleeId) throws Exception {
-        Enrollee enrolleeToGet = enrolleeRepo.getOne(enrolleeId);
-        if (enrolleeToGet == null) {
-            System.out.println("Could not find enrollee in system");
+    public ResponseEntity<List<Dependent>> getDependentsByEnrollee(@PathVariable int enrolleeId){
+        
+        Enrollee enrolleeToGet = enrolleeRepo.getOne(enrolleeId); //enrolleeRepo.findById(enrolleeId);
+
+        List<Dependent> dependents = enrolleeToGet.getDependents();
+        
+        if(dependents.isEmpty()) {
+            System.out.println("No dependents are registered for this enrollee.");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        enrolleeRepo.findById(enrolleeId);
+        return new ResponseEntity<>(dependents, HttpStatus.OK);
     }
 
-    // - Add dependents to an enrollee
-    @PostMapping("/enrollee/{enrolleeId}/dependents")
-    public Dependent addDependentByEnrollee(@PathVariable int enrolleeId, @RequestBody Dependent dependent)
-            throws Exception {
-        Enrollee enrollee = enrolleeRepo.getOne(enrolleeId);
-        if (enrollee == null) {
-            System.out.println("Could not find enrollee in system");
-        }
-        List<Dependent> dependents = enrollee.getDependents();
-        dependents.add(dependent);
-        return depRepo.save(dependent);
+    @Operation(summary = "Add a new dependent to a enrollee by id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Depedent created", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Enrollee.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad Request!", content = @Content)
+        })
+    @PostMapping("/{enrolleeId}/dependents")
+    public ResponseEntity<Dependent> addDependentByEnrollee(@PathVariable int enrolleeId, @RequestBody Dependent dependentToAdd) {
+            Enrollee enrolleeToGet;
+    try{
+        enrolleeToGet = enrolleeRepo.getOne(Integer.valueOf(enrolleeId));
+    } catch (Exception e) {
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping("/enrollee/{enrolleeId}/dependent/{dependentId}")
-    public void deleteDependent(@PathVariable int enrolleeId) throws Exception {
-        Enrollee enrolleeToDelete = enrolleeRepo.getOne(enrolleeId);
-        if (enrolleeToDelete == null) {
-            System.out.println("Could not find enrollee in system");
-        }
-        System.out.println("Enrollee deleted");
-        enrolleeRepo.deleteById(enrolleeId);
+    dependentToAdd.setEnrollee(enrolleeToGet); //= dependentToAdd.setEnrollee_Id(enrolleeId)
+    depRepo.save(dependentToAdd);
+    return new ResponseEntity<>(dependentToAdd, HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Delete a dependent by id under enrollee.")
+    @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Dependent deleted"),
+            @ApiResponse(responseCode = "404", description = "Bad request", content = @Content) })
+    @DeleteMapping("/{enrolleeId}/dependents/{dependentId}")
+    public ResponseEntity<Void> deleteDependentByEnrolleeId(@PathVariable int enrolleeId, @PathVariable int dependentId) 
+    {
+        Enrollee enrolleeToFind;
+        Dependent dependentToDelete;
+
+            try{
+                enrolleeToFind = enrolleeRepo.getOne(Integer.valueOf(enrolleeId));
+                dependentToDelete = depRepo.getOne(Integer.valueOf(dependentId));
+ 
+                if(enrolleeToFind.equals(dependentToDelete.getEnrollee())){
+                depRepo.deleteById(dependentId);   
+            }
+ 
+        } 
+            catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);       
     }
 }

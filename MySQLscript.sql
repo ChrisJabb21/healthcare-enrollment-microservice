@@ -14,7 +14,7 @@ CREATE TABLE `testhealthcare`.`dependents` (
   `dependent_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `birth_date` DATE NOT NULL,
-  `enrollee_id` INT,
+  `enrollee_id` INT NOT NULL,
    PRIMARY KEY (`dependent_id`),
    FOREIGN KEY (enrollee_id) REFERENCES enrollees(enrollee_id)
   );

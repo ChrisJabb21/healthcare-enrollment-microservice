@@ -36,7 +36,22 @@ public class Enrollee {
     private List<Dependent> dependents = new ArrayList<>();
     
     public Enrollee(){}
+    
+    public Enrollee(String name, String activation_Status, String birth_Date, String contact_Number) {
+        this.name = name;
+        this.activation_Status = activation_Status;
+        this.birth_Date = birth_Date;
+        this.contact_Number = contact_Number;
+    }
 
+    public Enrollee(String name, String activation_Status, String birth_Date, String contact_Number,
+            List<Dependent> dependents) {
+        this.name = name;
+        this.activation_Status = activation_Status;
+        this.birth_Date = birth_Date;
+        this.contact_Number = contact_Number;
+        this.dependents = dependents;
+    }
 
     public String getName() {
         return name;
@@ -70,22 +85,17 @@ public class Enrollee {
         this.contact_Number = contact_Number;
     }
 
-    public Enrollee(String name, String activation_Status, String birth_Date, String contact_Number,
-            List<Dependent> dependents) {
-        this.name = name;
-        this.activation_Status = activation_Status;
-        this.birth_Date = birth_Date;
-        this.contact_Number = contact_Number;
-        this.dependents = dependents;
-    }
 
     public List<Dependent> getDependents() {
         return dependents;
     }
+    
 
     public void setDependents(List<Dependent> dependents) {
         this.dependents = dependents;
     }
+
+
 
     public int getEnrollee_Id() {
         return enrollee_Id;
@@ -94,6 +104,12 @@ public class Enrollee {
     public void setEnrollee_Id(int enrollee_Id) {
         this.enrollee_Id = enrollee_Id;
     }
+
+    public Enrollee(int enrollee_Id) {
+        this.enrollee_Id = enrollee_Id;
+    }
+
+
 
     
 }

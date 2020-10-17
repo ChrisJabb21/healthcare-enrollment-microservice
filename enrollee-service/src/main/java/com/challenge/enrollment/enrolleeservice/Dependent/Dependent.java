@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import com.challenge.enrollment.enrolleeservice.Enrollee;
+//@Data
+//@NoArgsConstructor
 
 /**
  * An Enrollee's health plan’s spouse 
@@ -30,9 +32,22 @@ public class Dependent {
     @JoinColumn(name = "enrollee_id")
     @JsonBackReference
     private Enrollee enrollee;
+    // private int enrollee_Id;
+
 
     public Dependent() {}
 
+    public Dependent(String name, String birth_Date) {
+		this.name = name;
+		this.birth_Date = birth_Date;
+	}
+
+    public Dependent(int dependent_Id, String name, String birth_Date,Enrollee enrollee) {
+		this.dependent_Id = dependent_Id;
+		this.name = name;
+        this.birth_Date = birth_Date;
+        this.enrollee = enrollee;
+	}
 
     public Dependent(String name, String birth_Date, Enrollee enrollee) {
         this.name = name;
@@ -45,6 +60,8 @@ public class Dependent {
         return "Dependent [birth_Date=" + birth_Date + ", dependent_Id=" + dependent_Id + ", enrollee=" + enrollee
                 + ", name=" + name + "]";
     }
+
+
 
     public int getDependent_Id() {
         return dependent_Id;
@@ -77,7 +94,4 @@ public class Dependent {
     public void setEnrollee(Enrollee enrollee) {
         this.enrollee = enrollee;
     }
-
- 
-    
 }
