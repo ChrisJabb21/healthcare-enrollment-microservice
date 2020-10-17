@@ -23,8 +23,9 @@ public class DependentController {
 		return dependentRepo.findAll();
     }
 
+    //TODO test dependents
 
-    @DeleteMapping("/dependent/{dependentId}")
+    @DeleteMapping("/{dependentId}")
     public void deleteDependent(@PathVariable int dependentId) throws Exception {
         Dependent dependentToDelete = dependentRepo.getOne(dependentId);
         if (dependentToDelete == null) {
