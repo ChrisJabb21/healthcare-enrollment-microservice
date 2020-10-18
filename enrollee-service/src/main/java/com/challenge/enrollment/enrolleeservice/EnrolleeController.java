@@ -41,7 +41,6 @@ public class EnrolleeController {
     @Autowired
     DependentRepository depRepo;
 
-    //TODO
     @Operation(summary = "Get all enrollees.")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Retrieval successful!", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Enrollee.class))) }),
