@@ -1,5 +1,6 @@
 package com.challenge.enrollment.enrolleeservice.dependent;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,7 +24,7 @@ import com.challenge.enrollment.enrolleeservice.Enrollee;
  */
 @Entity
 @Table(name = "dependents")
-public class Dependent {
+public class Dependent implements Serializable {
 
     @Id
     @GeneratedValue
