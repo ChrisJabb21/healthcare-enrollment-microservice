@@ -42,9 +42,9 @@ public class EnrolleeController {
     DependentRepository depRepo;
 
     @Operation(summary = "Get all enrollees.")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Retrieval successful!", content = {
+        @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Retrieval successful!", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Enrollee.class))) }),
-            @ApiResponse(responseCode = "404", description = "No enrollees found!", content = @Content) })
+        @ApiResponse(responseCode = "404", description = "No enrollees found!", content = @Content) })
     @GetMapping
     /***
      * Retrieve all enrollees in system or datasource.

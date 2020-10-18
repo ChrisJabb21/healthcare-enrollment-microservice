@@ -1,5 +1,10 @@
 package com.challenge.enrollment.enrolleeservice.dependent;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.challenge.enrollment.enrolleeservice.Enrollee;
 
 /**
- * An Enrollee's health plan’s spouse 
- * and eligible child or other member 
- * who meets the applicable eligibility requirements of a group benefits agreement
+ * An Enrollee's health plan’s spouse and eligible child or other member who
+ * meets the applicable eligibility requirements of a group benefits agreement
+ * 
  * @param enrollee
  */
 @Entity
@@ -21,29 +26,30 @@ import com.challenge.enrollment.enrolleeservice.Enrollee;
 public class Dependent {
 
     @Id
-	@GeneratedValue
-	private int dependent_Id;
-	private String name;
+    @GeneratedValue
+    private int dependent_Id;
+    private String name;
     private String birth_Date;
-    
+
     @ManyToOne
     @JoinColumn(name = "enrollee_id")
     @JsonBackReference
     private Enrollee enrollee;
 
-    public Dependent() {}    
-    
+    public Dependent() {
+    }
+
     public Dependent(String name, String birth_Date) {
         this.name = name;
         this.birth_Date = birth_Date;
     }
-    
-    public Dependent(int dependent_Id, String name, String birth_Date,Enrollee enrollee) {
-		this.dependent_Id = dependent_Id;
-		this.name = name;
+
+    public Dependent(int dependent_Id, String name, String birth_Date, Enrollee enrollee) {
+        this.dependent_Id = dependent_Id;
+        this.name = name;
         this.birth_Date = birth_Date;
         this.enrollee = enrollee;
-	}
+    }
 
     public Dependent(String name, String birth_Date, Enrollee enrollee) {
         this.name = name;
@@ -56,8 +62,6 @@ public class Dependent {
         return "Dependent [birth_Date=" + birth_Date + ", dependent_Id=" + dependent_Id + ", enrollee=" + enrollee
                 + ", name=" + name + "]";
     }
-
-
 
     public int getDependent_Id() {
         return dependent_Id;
@@ -75,7 +79,12 @@ public class Dependent {
         this.name = name;
     }
 
-    public String getBirth_Date() {
+    public String getBirth_Date() throws ParseException {
+        DateFormat inputFormat = new SimpleDateFormat("yyyy-mm-dd");
+        DateFormat outputFormat = new SimpleDateFormat("mm-dd-yyyy");
+
+        Date date = inputFormat.parse(birth_Date);
+        birth_Date = outputFormat.format(date);
         return birth_Date;
     }
 

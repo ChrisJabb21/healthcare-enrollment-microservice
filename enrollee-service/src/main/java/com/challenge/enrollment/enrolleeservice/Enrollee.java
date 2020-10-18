@@ -1,6 +1,11 @@
 package com.challenge.enrollment.enrolleeservice;
 
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -12,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.challenge.enrollment.enrolleeservice.dependent.Dependent;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /***
@@ -19,14 +25,20 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
  */
 @Entity
 @Table(name = "enrollees")
-public class Enrollee {
+public class Enrollee implements Serializable {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int enrollee_Id;
     private String name;
     private String activation_Status;
+    @JsonFormat(pattern = "MM-dd-yyyy")
     private String birth_Date;
+
     @Column(name = "phone_number")
     private String contact_Number;
 
@@ -70,7 +82,12 @@ public class Enrollee {
         this.activation_Status = activation_Status;
     }
 
-    public String getBirth_Date() {
+    public String getBirth_Date() throws ParseException {
+        DateFormat inputFormat = new SimpleDateFormat("yyyy-mm-dd");
+        DateFormat outputFormat = new SimpleDateFormat("mm-dd-yyyy");
+
+        Date date = inputFormat.parse(birth_Date);
+        birth_Date = outputFormat.format(date);
         return birth_Date;
     }
 
