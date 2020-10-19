@@ -17,10 +17,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.challenge.enrollment.enrolleeservice.Enrollee;
 
 /**
+ * A dependent of an Enrollee.
  * An Enrollee's health plan’s spouse and eligible child or other member who
- * meets the applicable eligibility requirements of a group benefits agreement
- * 
- * @param enrollee
+ * meets the applicable eligibility requirements of a group benefits agreement 
+ *
  */
 @Entity
 @Table(name = "dependents")

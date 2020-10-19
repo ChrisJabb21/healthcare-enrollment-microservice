@@ -1,6 +1,6 @@
 # HealthCare Enrollment Microservices (BE)
 
-A Spring Boot microservice backend application with a MySQL backend and CRUD REST API services and implementation for tracking the status of enrollees in a healthcare program. 
+A Spring Boot microservices backend application with a MySQL backend and CRUD REST API implementation for tracking the status of enrollees in a healthcare program. 
 
 Technologies Used: Spring Cloud, JPA, Spring Boot, MySQL, OpenAPI using Swagger tools for API Documenatation.
 

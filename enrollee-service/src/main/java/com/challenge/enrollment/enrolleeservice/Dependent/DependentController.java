@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,7 +22,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
-
 
 @RestController
 @RequestMapping("/dependents")
@@ -34,14 +32,12 @@ public class DependentController {
     @Autowired
     DependentRepository dependentRepo;
 
-
     @Operation(summary = "Get all Dependents")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "All Dependents retrieved ", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Dependent.class))) }),
-        @ApiResponse(responseCode = "404", description = "No enrollees found!", content = @Content) })
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "All Dependents retrieved ", content = {
+            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Dependent.class))) }),
+            @ApiResponse(responseCode = "404", description = "No enrollees found!", content = @Content) })
     @GetMapping
-    public  ResponseEntity<List<Dependent>> getAllDependents() {
+    public ResponseEntity<List<Dependent>> getAllDependents() {
         List<Dependent> dependentList = (List<Dependent>) dependentRepo.findAll();
         if (dependentList.isEmpty()) {
             System.out.println("No dependents found!");
@@ -49,11 +45,10 @@ public class DependentController {
         }
         return new ResponseEntity<>(dependentList, HttpStatus.OK);
     }
- 
 
     @Operation(summary = "Update a Depedent")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Dependent updated successfully", content = {
+            @ApiResponse(responseCode = "200", description = "Dependent updated successfully!", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = Dependent.class)) }),
             @ApiResponse(responseCode = "404", description = "No dependent exists with given id", content = @Content) })
     @PutMapping("/{dependentId}")
@@ -70,15 +65,20 @@ public class DependentController {
 
         return new ResponseEntity<>(updatedDependent, HttpStatus.OK);
     }
-    
-    
+
+    @Operation(summary = "Delete a Depedent")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Dependent deleted successfully!", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Dependent.class)) }),
+            @ApiResponse(responseCode = "404", description = "No dependent exists with given id", content = @Content) })
     @DeleteMapping("/{dependentId}")
-    public void deleteDependent(@PathVariable int dependentId) throws Exception {
-        Dependent dependentToDelete = dependentRepo.getOne(dependentId);
-        if (dependentToDelete == null) {
-            System.out.println("Could not find dependent in system");
+    public ResponseEntity<Void> deleteDependent(
+            @Parameter(description = "id of dependent to be updated") @PathVariable("dependentId") int dependentId) {
+        try {
+            dependentRepo.deleteById(dependentId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        System.out.println("Dependent deleted");
-        dependentRepo.deleteById(dependentId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
