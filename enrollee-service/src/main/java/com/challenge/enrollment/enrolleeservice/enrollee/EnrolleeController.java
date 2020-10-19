@@ -1,4 +1,4 @@
-package com.challenge.enrollment.enrolleeservice;
+package com.challenge.enrollment.enrolleeservice.enrollee;
 
 import java.util.List;
 import java.util.Optional;

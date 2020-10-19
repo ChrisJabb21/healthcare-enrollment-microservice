@@ -1,4 +1,4 @@
-package com.challenge.enrollment.enrolleeservice;
+package com.challenge.enrollment.enrolleeservice.enrollee;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,4 +1,4 @@
-package com.challenge.enrollment.enrolleeservice;
+package com.challenge.enrollment.enrolleeservice.enrollee;
 
 import java.io.Serializable;
 import java.text.DateFormat;

@@ -12,9 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import com.challenge.enrollment.enrolleeservice.Enrollee;
+import com.challenge.enrollment.enrolleeservice.enrollee.Enrollee;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * A dependent of an Enrollee.
