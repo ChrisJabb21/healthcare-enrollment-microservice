@@ -120,10 +120,7 @@ public class EnrolleeController {
      * 
      * Remove an enrollee entirelys, as well as dependents belonging to that
      * enrollee.
-     * 
-     * @param enrollee
-     * @throws Exception 200 http response for success otherwise 404 and display
-     *                   error.
+     *
      */
     @Operation(summary = "Delete a enrollee.")
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Enrollee deleted"),
@@ -166,14 +163,13 @@ public class EnrolleeController {
             @ApiResponse(responseCode = "400", description = "Bad Request!", content = @Content)
         })
     @PostMapping("/{enrolleeId}/dependents")
-    public ResponseEntity<Dependent> addDependentByEnrollee(@PathVariable int enrolleeId, @RequestBody Dependent dependentToAdd) {
+    public ResponseEntity<Dependent> addDependentByEnrollee(@Parameter(description="id of Enrollee to add dependent to.")@PathVariable("enrolleeId") int enrolleeId, @RequestBody Dependent dependentToAdd) {
             Enrollee enrolleeToGet;
     try{
         enrolleeToGet = enrolleeRepo.getOne(Integer.valueOf(enrolleeId));
     } catch (Exception e) {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
     dependentToAdd.setEnrollee(enrolleeToGet); //= dependentToAdd.setEnrollee_Id(enrolleeId)
     depRepo.save(dependentToAdd);
     return new ResponseEntity<>(dependentToAdd, HttpStatus.CREATED);
@@ -183,7 +179,8 @@ public class EnrolleeController {
     @ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Dependent deleted"),
             @ApiResponse(responseCode = "404", description = "Bad request", content = @Content) })
     @DeleteMapping("/{enrolleeId}/dependents/{dependentId}")
-    public ResponseEntity<Void> deleteDependentByEnrolleeId(@PathVariable int enrolleeId, @PathVariable int dependentId) 
+    public ResponseEntity<Void> deleteDependentByEnrolleeId(@Parameter(description="id of Enrollee to delete dependent from.")@PathVariable("enrolleeId") int enrolleeId, 
+    @Parameter(description="id of Enrollee to delete dependent from.") @PathVariable("dependentId") int dependentId) 
     {
         Enrollee enrolleeToFind;
         Dependent dependentToDelete;
