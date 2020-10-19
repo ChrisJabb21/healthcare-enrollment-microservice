@@ -64,12 +64,12 @@
             <scope>test</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/junit/junit -->
-<dependency>
-    <groupId>junit</groupId>
-    <artifactId>junit</artifactId>
-    <version>4.13.1</version>
-    <scope>test</scope>
-</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
         <!-- SpringDoc -->
         <dependency>
             <groupId>org.springdoc</groupId>
@@ -160,6 +160,27 @@
                             <apiDocsUrl>http://localhost:8080/api-docs</apiDocsUrl>
                             <outputFileName>openapi.json</outputFileName>
                             <outputDir>${project.build.directory}</outputDir>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>1.4.9</version>
+                        <executions>
+                            <execution>
+                                <id>default</id>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>push</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <repository>com.challenge.healthcare/enrollment-docker-${project.artifactId}</repository>
+                            <tag>${project.version}</tag>
+                            <buildArgs>
+                                <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                            </buildArgs>
                         </configuration>
                     </plugin>
                 </plugins>
