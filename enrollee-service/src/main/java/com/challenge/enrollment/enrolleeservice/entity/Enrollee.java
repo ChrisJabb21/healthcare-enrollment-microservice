@@ -1,4 +1,4 @@
-package com.challenge.enrollment.enrolleeservice.enrollee;
+package com.challenge.enrollment.enrolleeservice.entity;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -16,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.challenge.enrollment.enrolleeservice.dependent.Dependent;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 

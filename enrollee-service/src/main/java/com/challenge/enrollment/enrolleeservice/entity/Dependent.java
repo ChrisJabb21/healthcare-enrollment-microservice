@@ -1,4 +1,4 @@
-package com.challenge.enrollment.enrolleeservice.dependent;
+package com.challenge.enrollment.enrolleeservice.entity;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.challenge.enrollment.enrolleeservice.enrollee.Enrollee;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
@@ -83,7 +82,6 @@ public class Dependent implements Serializable {
     public String getBirth_Date() throws ParseException {
         DateFormat inputFormat = new SimpleDateFormat("yyyy-mm-dd");
         DateFormat outputFormat = new SimpleDateFormat("mm-dd-yyyy");
-
         Date date = inputFormat.parse(birth_Date);
         birth_Date = outputFormat.format(date);
         return birth_Date;
