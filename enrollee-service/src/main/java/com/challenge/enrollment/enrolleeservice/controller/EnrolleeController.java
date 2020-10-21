@@ -9,7 +9,6 @@ import com.challenge.enrollment.enrolleeservice.entity.Enrollee;
 import com.challenge.enrollment.enrolleeservice.service.EnrolleeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,16 +31,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/enrollees")
 @Tag(name = "enrollees", description = "The Enrollee API documentation with annotations and operations.")
-//@EnableJpaRepositories
 public class EnrolleeController {
 
     @Autowired
     EnrolleeService enrolleeService;
-    // @Autowired
-    // EnrolleeRepository enrolleeRepo;
-    // @Autowired
-    // DependentRepository depRepo;
-
     @Operation(summary = "Get all enrollees.")
         @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Retrieval successful!", content = {
             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Enrollee.class))) }),
@@ -65,7 +58,6 @@ public class EnrolleeController {
     /***
      * Add a new enrollee
      * 
-     * @param enrollee
      */
     public ResponseEntity<Enrollee> addEnrollee(
             @Parameter(description = "Enrollee object to be created") @RequestBody @Valid Enrollee enrollee) {
@@ -83,7 +75,6 @@ public class EnrolleeController {
         return enrolleeService.getById(enrolleeId);
     }
 
-    ////
     @Operation(summary = "Update a enrollee")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Enrollee updated successfully", content = {
@@ -112,7 +103,7 @@ public class EnrolleeController {
 
     @Operation(summary = "Add a new dependent to a enrollee by id.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Depedent created", content = {
+            @ApiResponse(responseCode = "201", description = "Dependent created", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = Enrollee.class)) }),
             @ApiResponse(responseCode = "400", description = "Bad Request!", content = @Content)
         })
@@ -131,26 +122,17 @@ public class EnrolleeController {
        return enrolleeService.deleteDependentByEnrolleeId(enrolleeId, dependentId);      
     }
 
-
-    // @Operation(summary = "Update a Depedent")
-    // @ApiResponses(value = {
-    //         @ApiResponse(responseCode = "200", description = "Dependent updated successfully!", content = {
-    //                 @Content(mediaType = "application/json", schema = @Schema(implementation = Dependent.class)) }),
-    //         @ApiResponse(responseCode = "404", description = "No dependent exists with given id", content = @Content) })
-    // @PutMapping("/{dependentId}")
-    // public ResponseEntity<Dependent> updateDependent(
-    //         @Parameter(description = "id of dependent to be updated") @PathVariable("dependentId") int dependentId,
-    //         @RequestBody Dependent dependent) {
-
-    //     boolean isDependentPresent = dependentRepo.existsById(Integer.valueOf(dependentId));
-
-    //     if (!isDependentPresent) {
-    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //     }
-    //     Dependent updatedDependent = dependentRepo.save(dependent);
-
-    //     return new ResponseEntity<>(updatedDependent, HttpStatus.OK);
-    // }
+    @Operation(summary = "Update a Depedent")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Dependent updated successfully!", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Dependent.class)) }),
+            @ApiResponse(responseCode = "404", description = "Bad Request!", content = @Content) })
+    @PutMapping("{enrolleeId}/dependents/{dependentId}")
+    public ResponseEntity<Dependent> updateDependent(
+            @Parameter(description = "id of dependent to be updated.") @PathVariable("enrolleeId") int enrolleeId, @Parameter(description = "id of dependent to be updated") @PathVariable("dependentId") int dependentId,
+            @RequestBody Dependent dependent) {
+                return enrolleeService.updateDependent(enrolleeId, dependentId, dependent);      
+    }
 
 
 }

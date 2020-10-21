@@ -25,6 +25,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "dependents")
 public class Dependent implements Serializable {
 
+    
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue
     private int dependent_Id;

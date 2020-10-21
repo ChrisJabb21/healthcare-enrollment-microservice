@@ -1,5 +1,6 @@
 package com.challenge.enrollment.enrolleeservice.service;
 
+
 import java.util.List;
 import java.util.Optional;
 
@@ -107,4 +108,37 @@ public class EnrolleeService implements IEnrolleeService {
             }
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);       
     }
+
+    public ResponseEntity<Dependent> updateDependent(int enrolleeId, int dependentId, Dependent dependent) {
+        Enrollee enrolleeToFind;
+        try{
+            enrolleeToFind = enrolleeRepository.getOne(Integer.valueOf(enrolleeId));
+            dependent = dependentRepository.getOne(Integer.valueOf(dependentId));
+            
+            if (enrolleeToFind.equals(dependent.getEnrollee())) {
+                dependentRepository.save(dependent);
+            }
+        }  catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    
+            return new ResponseEntity<>(dependent, HttpStatus.OK);
+        }
 }
+
+/*
+ Enrollee enrolleeToFind;
+        Dependent dependentToDelete;
+            try{
+                enrolleeToFind = enrolleeRepository.getOne(Integer.valueOf(enrolleeId));
+                dependentToDelete = dependentRepository.getOne(Integer.valueOf(dependentId));
+
+                if(enrolleeToFind.equals(dependentToDelete.getEnrollee())){
+                    dependentRepository.deleteById(dependentId);   
+            }
+        } 
+            catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);     
+*/
