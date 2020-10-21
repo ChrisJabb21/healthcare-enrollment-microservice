@@ -89,7 +89,12 @@ public class Dependent implements Serializable {
         return birth_Date;
     }
 
-    public void setBirth_Date(String birth_Date) {
+    //
+    public void setBirth_Date(String birth_Date) throws ParseException {
+        DateFormat inputFormat = new SimpleDateFormat("mm-dd-yyyy");
+        DateFormat outputFormat = new  SimpleDateFormat("yyyy-mm-dd");
+        Date date = inputFormat.parse(birth_Date);
+        birth_Date = outputFormat.format(date);
         this.birth_Date = birth_Date;
     }
 
@@ -97,7 +102,7 @@ public class Dependent implements Serializable {
         return enrollee;
     }
 
-    public void setEnrollee(Enrollee enrollee) {
-        this.enrollee = enrollee;
+    public void setEnrollee(Enrollee enrolleeToGet) {
+        this.enrollee = enrolleeToGet;
     }
 }

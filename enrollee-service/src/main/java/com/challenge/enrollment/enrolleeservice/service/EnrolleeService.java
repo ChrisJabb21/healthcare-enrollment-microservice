@@ -110,35 +110,17 @@ public class EnrolleeService implements IEnrolleeService {
     }
 
     public ResponseEntity<Dependent> updateDependent(int enrolleeId, int dependentId, Dependent dependent) {
-        Enrollee enrolleeToFind;
-        try{
-            enrolleeToFind = enrolleeRepository.getOne(Integer.valueOf(enrolleeId));
-            dependent = dependentRepository.getOne(Integer.valueOf(dependentId));
-            
-            if (enrolleeToFind.equals(dependent.getEnrollee())) {
+        Enrollee isEnrolleePresent = enrolleeRepository.getOne(enrolleeId);
+        Optional<Dependent> isDependentPresent = dependentRepository.findById(dependentId);
+            try{    
+            if (isDependentPresent.isPresent()) {
+                dependent.setEnrollee(isEnrolleePresent);
                 dependentRepository.save(dependent);
+                
             }
         }  catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    
+        }   
             return new ResponseEntity<>(dependent, HttpStatus.OK);
         }
 }
-
-/*
- Enrollee enrolleeToFind;
-        Dependent dependentToDelete;
-            try{
-                enrolleeToFind = enrolleeRepository.getOne(Integer.valueOf(enrolleeId));
-                dependentToDelete = dependentRepository.getOne(Integer.valueOf(dependentId));
-
-                if(enrolleeToFind.equals(dependentToDelete.getEnrollee())){
-                    dependentRepository.deleteById(dependentId);   
-            }
-        } 
-            catch (Exception e) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);     
-*/

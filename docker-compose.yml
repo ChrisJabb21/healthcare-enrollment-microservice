@@ -20,6 +20,7 @@ services:
         environment:
             - JAVA_OPTS=
               -DEUREKA_SERVER=http://discovery:8761/eureka
+              -Dspring.cloud.config.server.native.searchLocations=C:\${user.home}\application-config
           depends_on:
             - discovery
             - config
