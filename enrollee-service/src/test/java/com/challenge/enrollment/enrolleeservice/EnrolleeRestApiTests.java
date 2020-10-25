@@ -1,6 +1,6 @@
 package com.challenge.enrollment.enrolleeservice;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +12,7 @@ import io.restassured.response.Response;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+
 class EnrolleeRestApiTests {
 
     private final String ROOT_URI = "http://localhost:8080";
@@ -19,8 +20,8 @@ class EnrolleeRestApiTests {
     @Test
     public void whenGetAllEnrollees_thenSuccess() {
         Response response = RestAssured.get(ROOT_URI + "/enrollees");
-        Assert.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
-        Assert.assertNotNull(response.getBody());
+        Assertions.assertEquals(HttpStatus.OK.value(), response.getStatusCode());
+        Assertions.assertNotNull(response.getBody());
     }
 
     

@@ -24,6 +24,11 @@ public class EnrolleeService implements IEnrolleeService {
     private DependentRepository dependentRepository;
 
     @Override
+    public Enrollee getEnrolleeByName(String name) {
+        return enrolleeRepository.findByName(name);
+    }
+
+    @Override
     public ResponseEntity<List<Enrollee>> getAll() {
         List<Enrollee> enrolleeList = enrolleeRepository.findAll();
         if (enrolleeList.isEmpty()) {

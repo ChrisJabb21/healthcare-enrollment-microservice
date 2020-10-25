@@ -49,6 +49,10 @@ public class Enrollee implements Serializable {
     public Enrollee() {
     }
 
+    public Enrollee(String name) {
+        this.name = name;
+    }
+
     public Enrollee(String name, String activation_Status, String birth_Date, String contact_Number) {
         this.name = name;
         this.activation_Status = activation_Status;
@@ -121,5 +125,7 @@ public class Enrollee implements Serializable {
     public Enrollee(int enrollee_Id) {
         this.enrollee_Id = enrollee_Id;
     }
+
+	
 
 }
